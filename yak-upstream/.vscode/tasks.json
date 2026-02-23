@@ -1,0 +1,747 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "cargo-build-cli",
+            "type": "shell",
+            "command": "cargo",
+            "args": [
+                "build",
+                "--package",
+                "yak_cl"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "cargo-build-all",
+            "type": "shell",
+            "command": "cargo",
+            "args": [
+                "build",
+                "--workspace"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin",
+                    "VIRTUAL_ENV": "${workspaceFolder}/.venv"
+                }
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "cargo-test-build",
+            "type": "shell",
+            "command": "cargo",
+            "args": [
+                "test",
+                "--no-run",
+                "--package",
+                "yak"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "cargo-fmt-check",
+            "type": "shell",
+            "command": "cargo",
+            "args": [
+                "fmt",
+                "--all",
+                "--",
+                "--check"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "problemMatcher": [],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "cargo-clippy",
+            "type": "shell",
+            "command": "cargo",
+            "args": [
+                "clippy",
+                "--workspace",
+                "--all-targets",
+                "--",
+                "-D",
+                "warnings"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin",
+                    "VIRTUAL_ENV": "${workspaceFolder}/.venv"
+                }
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "cargo-ci-check",
+            "dependsOn": [
+                "cargo-fmt-check",
+                "cargo-clippy"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": [],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "cargo-clean",
+            "type": "shell",
+            "command": "cargo",
+            "args": [
+                "clean"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "problemMatcher": [],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "maturin-develop",
+            "type": "shell",
+            "command": "maturin",
+            "args": [
+                "develop",
+                "--release"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/yak_python",
+                "env": {
+                    "PATH": "${env:PATH};${workspaceFolder}/.venv/Scripts;${workspaceFolder}/.venv/bin;C:/Users/bjorn/.cargo/bin",
+                    "VIRTUAL_ENV": "${workspaceFolder}/.venv"
+                }
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "run-pytest-all",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "'${workspaceFolder}/.venv/bin/python' -m pytest tests/ -v"
+            ],
+            "windows": {
+                "command": "powershell",
+                "args": [
+                    "-Command",
+                    "& '${workspaceFolder}/.venv/Scripts/python.exe' -m pytest tests/ -v"
+                ]
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/yak_pytest"
+            },
+            "dependsOn": [
+                "maturin-develop"
+            ],
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "rebuild-and-test",
+            "dependsOn": [
+                "cargo-ci-check",
+                "cargo-build-all",
+                "run-pytest-all"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "cargo-build-cli-release",
+            "type": "shell",
+            "command": "cargo",
+            "args": [
+                "build",
+                "--release",
+                "--package",
+                "yak_cl"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "cargo-build-all-release",
+            "type": "shell",
+            "command": "cargo",
+            "args": [
+                "build",
+                "--release",
+                "--workspace"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin",
+                    "VIRTUAL_ENV": "${workspaceFolder}/.venv"
+                }
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "copy-release-binaries",
+            "type": "process",
+            "command": "echo",
+            "args": ["unsupported platform"],
+            "windows": {
+                "command": "powershell",
+                "args": [
+                    "-Command",
+                    "$best=$null; $bt=[datetime]::MinValue; foreach($line in (git -C '${workspaceFolder}' worktree list --porcelain)){ if($line -match '^worktree (.+)'){ $wt=$Matches[1]; $bin=Join-Path $wt 'target\\release\\yak.exe'; if(Test-Path $bin){ $t=(Get-Item $bin).LastWriteTime; if($t -gt $bt){ $bt=$t; $best=$wt } } } }; if(-not $best){ Write-Error 'No release binary found in any worktree'; exit 1 }; $branch=(git -C $best branch --show-current).Trim().Replace('/','-'); if($branch -eq 'master'){ $name='yak.exe' } else { $name='yak-'+$branch+'.exe' }; New-Item -ItemType Directory -Force -Path '${env:USERPROFILE}/bin' | Out-Null; Copy-Item (Join-Path $best 'target\\release\\yak.exe') (Join-Path '${env:USERPROFILE}/bin' $name) -Force; $dll=Join-Path $best 'target\\release\\yak_c.dll'; if(Test-Path $dll){ Copy-Item $dll '${env:USERPROFILE}/bin/yak_c.dll' -Force; Write-Host ('Copied ' + $best + ' [' + $branch + '] -> ~/bin/' + $name + ' + yak_c.dll') } else { Write-Host ('Copied ' + $best + ' [' + $branch + '] -> ~/bin/' + $name + ' (yak_c.dll not built, skipped)') }"
+                ]
+            },
+            "osx": {
+                "command": "bash",
+                "args": [
+                    "-c",
+                    "best=''; bt=0; while IFS= read -r line; do case \"$line\" in worktree\\ *) wt=\"${line#worktree }\"; bin=\"$wt/target/release/yak\"; if [ -f \"$bin\" ]; then t=$(stat -f%m \"$bin\" 2>/dev/null || stat -c%Y \"$bin\" 2>/dev/null); if [ \"$t\" -gt \"$bt\" ]; then bt=$t; best=$wt; fi; fi;; esac; done < <(git -C '${workspaceFolder}' worktree list --porcelain) && if [ -z \"$best\" ]; then echo 'No release binary found in any worktree' >&2; exit 1; fi && branch=$(git -C \"$best\" branch --show-current | tr '/' '-') && if [ \"$branch\" = \"master\" ]; then name=yak; else name=yak-$branch; fi && mkdir -p ~/.local/bin && cp \"$best/target/release/yak\" ~/.local/bin/$name && dll=\"$best/target/release/libyak_c.dylib\" && if [ -f \"$dll\" ]; then cp \"$dll\" ~/.local/bin/libyak_c.dylib && echo \"Copied $best [$branch] -> ~/.local/bin/$name + libyak_c.dylib\"; else echo \"Copied $best [$branch] -> ~/.local/bin/$name (libyak_c.dylib not built, skipped)\"; fi"
+                ]
+            },
+            "linux": {
+                "command": "bash",
+                "args": [
+                    "-c",
+                    "best=''; bt=0; while IFS= read -r line; do case \"$line\" in worktree\\ *) wt=\"${line#worktree }\"; bin=\"$wt/target/release/yak\"; if [ -f \"$bin\" ]; then t=$(stat -c%Y \"$bin\" 2>/dev/null || stat -f%m \"$bin\" 2>/dev/null); if [ \"$t\" -gt \"$bt\" ]; then bt=$t; best=$wt; fi; fi;; esac; done < <(git -C '${workspaceFolder}' worktree list --porcelain) && if [ -z \"$best\" ]; then echo 'No release binary found in any worktree' >&2; exit 1; fi && branch=$(git -C \"$best\" branch --show-current | tr '/' '-') && if [ \"$branch\" = \"master\" ]; then name=yak; else name=yak-$branch; fi && mkdir -p ~/.local/bin && cp \"$best/target/release/yak\" ~/.local/bin/$name && so=\"$best/target/release/libyak_c.so\" && if [ -f \"$so\" ]; then cp \"$so\" ~/.local/bin/libyak_c.so && echo \"Copied $best [$branch] -> ~/.local/bin/$name + libyak_c.so\"; else echo \"Copied $best [$branch] -> ~/.local/bin/$name (libyak_c.so not built, skipped)\"; fi"
+                ]
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "build-and-copy-release",
+            "dependsOn": [
+                "cargo-build-all-release",
+                "copy-release-binaries"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": [],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "test-release-build",
+            "dependsOn": [
+                "cargo-build-all-release",
+                "run-pytest-all"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "cargo-build-profiling",
+            "type": "shell",
+            "command": "cargo",
+            "args": [
+                "build",
+                "--profile",
+                "profiling",
+                "--package",
+                "yak_cl"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "samply-bench-all",
+            "type": "shell",
+            "command": "samply",
+            "osx": {
+                "args": [
+                    "record",
+                    "${workspaceFolder}/target/profiling/yak",
+                    "bench",
+                    "all"
+                ]
+            },
+            "args": [
+                "record",
+                "${workspaceFolder}/target/profiling/yak.exe",
+                "bench",
+                "all"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "dependsOn": [
+                "cargo-build-profiling"
+            ],
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "samply-bench-large-write",
+            "type": "shell",
+            "command": "samply",
+            "osx": {
+                "args": [
+                    "record",
+                    "${workspaceFolder}/target/profiling/yak",
+                    "bench",
+                    "large-write"
+                ]
+            },
+            "args": [
+                "record",
+                "${workspaceFolder}/target/profiling/yak.exe",
+                "bench",
+                "large-write"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "dependsOn": [
+                "cargo-build-profiling"
+            ],
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "samply-bench-small-write",
+            "type": "shell",
+            "command": "samply",
+            "osx": {
+                "args": [
+                    "record",
+                    "${workspaceFolder}/target/profiling/yak",
+                    "bench",
+                    "small-write"
+                ]
+            },
+            "args": [
+                "record",
+                "${workspaceFolder}/target/profiling/yak.exe",
+                "bench",
+                "small-write"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "dependsOn": [
+                "cargo-build-profiling"
+            ],
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "samply-bench-threaded-write",
+            "type": "shell",
+            "command": "samply",
+            "osx": {
+                "args": [
+                    "record",
+                    "${workspaceFolder}/target/profiling/yak",
+                    "bench",
+                    "threaded-write"
+                ]
+            },
+            "args": [
+                "record",
+                "${workspaceFolder}/target/profiling/yak.exe",
+                "bench",
+                "threaded-write"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "dependsOn": [
+                "cargo-build-profiling"
+            ],
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "samply-bench-threaded-read",
+            "type": "shell",
+            "command": "samply",
+            "osx": {
+                "args": [
+                    "record",
+                    "${workspaceFolder}/target/profiling/yak",
+                    "bench",
+                    "threaded-read"
+                ]
+            },
+            "args": [
+                "record",
+                "${workspaceFolder}/target/profiling/yak.exe",
+                "bench",
+                "threaded-read"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "dependsOn": [
+                "cargo-build-profiling"
+            ],
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "samply-bench-large-read",
+            "type": "shell",
+            "command": "samply",
+            "osx": {
+                "args": [
+                    "record",
+                    "${workspaceFolder}/target/profiling/yak",
+                    "bench",
+                    "large-read"
+                ]
+            },
+            "args": [
+                "record",
+                "${workspaceFolder}/target/profiling/yak.exe",
+                "bench",
+                "large-read"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "dependsOn": [
+                "cargo-build-profiling"
+            ],
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "samply-bench-small-read",
+            "type": "shell",
+            "command": "samply",
+            "osx": {
+                "args": [
+                    "record",
+                    "${workspaceFolder}/target/profiling/yak",
+                    "bench",
+                    "small-read"
+                ]
+            },
+            "args": [
+                "record",
+                "${workspaceFolder}/target/profiling/yak.exe",
+                "bench",
+                "small-read"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "dependsOn": [
+                "cargo-build-profiling"
+            ],
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "samply-bench-threaded-mixed",
+            "type": "shell",
+            "command": "samply",
+            "osx": {
+                "args": [
+                    "record",
+                    "${workspaceFolder}/target/profiling/yak",
+                    "bench",
+                    "threaded-mixed"
+                ]
+            },
+            "args": [
+                "record",
+                "${workspaceFolder}/target/profiling/yak.exe",
+                "bench",
+                "threaded-mixed"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "dependsOn": [
+                "cargo-build-profiling"
+            ],
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "samply-bench-churn",
+            "type": "shell",
+            "command": "samply",
+            "osx": {
+                "args": [
+                    "record",
+                    "${workspaceFolder}/target/profiling/yak",
+                    "bench",
+                    "churn"
+                ]
+            },
+            "args": [
+                "record",
+                "${workspaceFolder}/target/profiling/yak.exe",
+                "bench",
+                "churn"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "dependsOn": [
+                "cargo-build-profiling"
+            ],
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "samply-bench-single-stream",
+            "type": "shell",
+            "command": "samply",
+            "osx": {
+                "args": [
+                    "record",
+                    "${workspaceFolder}/target/profiling/yak",
+                    "bench",
+                    "single-stream"
+                ]
+            },
+            "args": [
+                "record",
+                "${workspaceFolder}/target/profiling/yak.exe",
+                "bench",
+                "single-stream"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "dependsOn": [
+                "cargo-build-profiling"
+            ],
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "samply-bench-overwrite",
+            "type": "shell",
+            "command": "samply",
+            "osx": {
+                "args": [
+                    "record",
+                    "${workspaceFolder}/target/profiling/yak",
+                    "bench",
+                    "overwrite"
+                ]
+            },
+            "args": [
+                "record",
+                "${workspaceFolder}/target/profiling/yak.exe",
+                "bench",
+                "overwrite"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${env:PATH};C:/Users/bjorn/.cargo/bin"
+                }
+            },
+            "dependsOn": [
+                "cargo-build-profiling"
+            ],
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+[build-system]
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "libyak"
+version = "0.11.0"
+description = "Python bindings for Yak. Yak is a modern container file library, useful for quickly building your own binary file formats. A file system in a file, focused on performance and ease of use."
+requires-python = ">=3.10"
+license = { text = "MIT OR Apache-2.0" }
+authors = [{ name = "Bjorn Toft Madsen", email = "bjorn@toftmadsen.org" }]
+keywords = ["filesystem", "storage", "embedded", "container", "streams"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: System :: Filesystems",
+]
+readme = "README.md"
+
+[project.urls]
+Repository = "https://github.com/sunbeam60/yak"
+Homepage = "https://github.com/sunbeam60/yak"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]

@@ -1,0 +1,12 @@
+[package]
+name = "cfb-bench"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+yak = { path = "yak-upstream/yak" }
+cfb = { path = "rust-cfb-upstream" }
+tempfile = "3"
+
+[profile.release]
+opt-level = 3
