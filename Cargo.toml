@@ -1,5 +1,5 @@
 [package]
-name = "cfb-bench"
+name = "yak-cfb-compare"
 version = "0.1.0"
 edition = "2021"
 
