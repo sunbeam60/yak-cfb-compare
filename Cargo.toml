@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 yak = { path = "../Yak/yak" }
-cfb = { path = "rust-cfb-upstream" }
+cfb = "0.14.0"
 tempfile = "3"
 
 [profile.release]
