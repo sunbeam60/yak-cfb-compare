@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-yak = { path = "../Yak/yak" }
+yak = "0.11.2"
 cfb = "0.14.0"
 tempfile = "3"
 
